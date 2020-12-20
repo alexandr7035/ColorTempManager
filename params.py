@@ -1,0 +1,4 @@
+APP_NAME = "ColorTempManager"
+APP_VERSION = "1.0"
+
+WINDOW_TITLE = APP_NAME + " v" + APP_VERSION
