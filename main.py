@@ -1,6 +1,7 @@
 import sys 
 import os
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import Qt
 
 import design 
 import params
@@ -28,6 +29,8 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.nightTempSlider.setMinimum(params.TEMP_MIN_VALUE)
         self.nightTempSlider.setMaximum(params.TEMP_MAX_VALUE)
 
+        self.stateCheckBox.stateChanged.connect(self.changeState)
+
         self.updateUI()
     
     def updateUI(self):
@@ -38,6 +41,14 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
         
         self.dayTempLabel.setText(str(self.manager.getDayTempValue()))
         self.nightTempLabel.setText(str(self.manager.getNightTempValue()))
+
+
+    def changeState(self, state):
+
+        if state == Qt.Checked:
+            self.manager.start()
+        else:
+            self.manager.stop()
 
 
 if __name__ == '__main__':
