@@ -30,6 +30,8 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.nightTempSlider.setMaximum(params.TEMP_MAX_VALUE)
 
         self.stateCheckBox.stateChanged.connect(self.changeState)
+        self.dayTempSlider.valueChanged.connect(self.changeDayValue)
+
 
         self.updateUI()
     
@@ -46,9 +48,21 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
     def changeState(self, state):
 
         if state == Qt.Checked:
-            self.manager.start()
+            self.manager.update()
         else:
             self.manager.stop()
+
+
+    def changeDayValue(self, value):
+        print("value changed " + str(value))
+        self.manager.setDayTempValue(value)
+
+        self.dayTempLabel.setText(str(self.manager.getDayTempValue()))
+
+        if self.stateCheckBox.isChecked():
+            self.manager.update()
+
+
 
 
 if __name__ == '__main__':

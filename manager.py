@@ -24,7 +24,7 @@ class ColorTempManager:
         self.settings = json.load(self.config)
 
 
-    def start(self):
+    def update(self):
         os.system("redshift -P -O " + str(self.settings["day_value"]))
         self.settings['is_enabled'] = True
         self.config.seek(0)
@@ -39,8 +39,12 @@ class ColorTempManager:
         self.config.truncate()
 
 
-    def setDayTempValue(self):
-        pass
+    def setDayTempValue(self, value):
+
+        self.settings['day_value'] = value
+        self.config.seek(0)
+        json.dump(self.settings, self.config)
+        self.config.truncate()
 
 
     def setNightTempValue(self):
@@ -64,3 +68,5 @@ class ColorTempManager:
     
     def checkIfEnabled(self):
         return self.settings["is_enabled"]
+
+    
