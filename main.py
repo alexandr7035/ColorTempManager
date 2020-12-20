@@ -6,6 +6,7 @@ import design
 import params
 import manager
 
+
 class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
     def __init__(self):
         super().__init__()
@@ -21,9 +22,22 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.manager = manager.ColorTempManager()
 
         # Update ui on start
-        pass
+        self.dayTempSlider.setMinimum(params.TEMP_MIN_VALUE)
+        self.dayTempSlider.setMaximum(params.TEMP_MAX_VALUE)
 
+        self.nightTempSlider.setMinimum(params.TEMP_MIN_VALUE)
+        self.nightTempSlider.setMaximum(params.TEMP_MAX_VALUE)
 
+        self.updateUI()
+    
+    def updateUI(self):
+        # Set values from settings
+        self.dayTempSlider.setValue(self.manager.getDayTempValue())
+        self.nightTempSlider.setValue(self.manager.getNightTempValue())
+        self.stateCheckBox.setChecked(self.manager.checkIfEnabled())
+        
+        self.dayTempLabel.setText(str(self.manager.getDayTempValue()))
+        self.nightTempLabel.setText(str(self.manager.getNightTempValue()))
 
 
 if __name__ == '__main__':
