@@ -4,6 +4,7 @@ from PyQt5 import QtWidgets
 
 import design 
 import params
+import manager
 
 class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
     def __init__(self):
@@ -16,6 +17,11 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
 
         # Override the title
         self.setWindowTitle(params.WINDOW_TITLE)
+
+        self.manager = manager.ColorTempManager()
+
+        # Update ui on start
+        pass
 
 
 
