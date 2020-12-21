@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>400</width>
-    <height>119</height>
+    <height>100</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -21,10 +21,10 @@
   </property>
   <widget class="QWidget" name="widget">
    <layout class="QGridLayout" name="gridLayout">
-    <item row="4" column="0">
-     <widget class="QCheckBox" name="stateCheckBox">
+    <item row="2" column="2">
+     <widget class="QLabel" name="dayTempLabel">
       <property name="text">
-       <string>Enabled</string>
+       <string>6500</string>
       </property>
      </widget>
     </item>
@@ -35,45 +35,17 @@
       </property>
      </widget>
     </item>
-    <item row="4" column="1">
-     <widget class="QPushButton" name="settingsBtn">
-      <property name="text">
-       <string>Settings</string>
-      </property>
-     </widget>
-    </item>
     <item row="2" column="0">
-     <widget class="QLabel" name="dayText">
+     <widget class="QCheckBox" name="stateCheckBox">
       <property name="text">
-       <string>Day</string>
+       <string>Enabled</string>
       </property>
      </widget>
     </item>
-    <item row="3" column="1">
-     <widget class="QSlider" name="nightTempSlider">
-      <property name="orientation">
-       <enum>Qt::Horizontal</enum>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="0">
-     <widget class="QLabel" name="nightText">
+    <item row="2" column="3">
+     <widget class="QLabel" name="label">
       <property name="text">
-       <string>Night</string>
-      </property>
-     </widget>
-    </item>
-    <item row="2" column="2">
-     <widget class="QLabel" name="dayTempLabel">
-      <property name="text">
-       <string>6500</string>
-      </property>
-     </widget>
-    </item>
-    <item row="3" column="2">
-     <widget class="QLabel" name="nightTempLabel">
-      <property name="text">
-       <string>1000</string>
+       <string>K</string>
       </property>
      </widget>
     </item>
