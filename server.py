@@ -4,6 +4,21 @@ import os
 import socket
 import manager 
 
+#
+# Receives json objects with commands
+#
+# Possible commands
+#
+# 1) {"seteState": STATE}
+# 2) {"geteState": STATE}
+# 3) {"setDayValue": TEMP}
+# 4) {"getDayValue": TEMP}
+# 5) {"setNightValue"}
+# 6) {"getNightValue"}
+#
+# STATE value must be string (either "enabled" or "disabled")
+# TEMP value must be integer (from 1000 to 25000 according to redshift documentation)
+#
 
 def main():
 
