@@ -1,5 +1,7 @@
 import sys 
 import os
+import socket
+
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 
@@ -11,6 +13,12 @@ import manager
 class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
     def __init__(self):
         super().__init__()
+
+        # Connect to the server
+        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        client_socket.connect((params.SERVER_ADDR, params.SERVER_PORT))
+        client_socket.send("test test test".encode())
+
         self.setupUi(self)
 
         # Create working directory
