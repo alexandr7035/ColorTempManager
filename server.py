@@ -3,6 +3,7 @@ import json
 import os
 import socket
 import atexit
+import subprocess
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
@@ -69,10 +70,12 @@ class Manager:
 
 
     def activate_redshift(self):
-        os.system("redshift -P -O " + str(self.settings["day_temp"]))
+        #os.system("redshift -P -O " + str(self.settings["day_temp"]))
+        subprocess.check_call(['redshift', "-P",  "-O", str(self.settings["day_temp"])], stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
     def stop_redshift(self):
-        os.system("redshift -x")
+        #os.system("redshift -x")
+        subprocess.check_call(['redshift', "-x"], stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
 
     def update_timejob(self):
         if self.settings["is_enabled"]:
