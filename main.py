@@ -28,13 +28,15 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.dayTempSlider.setMaximum(params.TEMP_MAX_VALUE)
 
         self.stateCheckBox.stateChanged.connect(self.changeState)
-        self.dayTempSlider.valueChanged.connect(self.changeDayValue)
+
+        self.dayTempSlider.sliderReleased.connect(self.updateDayTempValue)
+        self.dayTempSlider.valueChanged.connect(self.dayTempSliderMoved)
 
 
         self.updateUI()
     
     def updateUI(self):
-        
+
         # Set values from settings
         day_value = self.client.get_day_temp_value()
         
@@ -52,16 +54,19 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
             self.client.set_enabled(False)
            
 
+    # Called when slider value changed
+    def dayTempSliderMoved(self, value):
+        self.dayTempLabel.setText(str(value))
 
-    def changeDayValue(self, value):
+
+    # Called only when mouse released
+    def updateDayTempValue(self):
+        value = self.dayTempSlider.value()
         print("value changed " + str(value))
-        #self.manager.setDayTempValue(value)
-        pass
+        self.client.set_day_temp_value(value)
 
-        #self.dayTempLabel.setText(str(self.manager.getDayTempValue()))
 
-        if self.stateCheckBox.isChecked():
-            pass
+
 
 
 
@@ -70,5 +75,4 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)  
     window = App()  
     window.show()  
-    print("shiwb")
     app.exec_()

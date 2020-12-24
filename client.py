@@ -28,4 +28,7 @@ class Client():
         response = json.loads(self.socket.recv(1024).decode())
         
         return int(response["response"])
+
+    def set_day_temp_value(self, value):
+        self.socket.sendall(json.dumps({"command": "setValue", "type" : "day_temp", "value" : value}).encode())
     
