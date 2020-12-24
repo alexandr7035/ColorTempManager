@@ -1,23 +1,19 @@
 import sys 
 import os
-import socket
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
 
 import design 
 import params
-import manager
+import client
 
 
 class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
     def __init__(self):
         super().__init__()
-
-        # Connect to the server
-        client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((params.SERVER_ADDR, params.SERVER_PORT))
-        client_socket.send("test test test".encode())
+    
+        self.client = client.Client()
 
         self.setupUi(self)
 
@@ -27,8 +23,6 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
 
         # Override the title
         self.setWindowTitle(params.WINDOW_TITLE)
-
-        self.manager = manager.ColorTempManager()
 
         # Update ui on start
         self.dayTempSlider.setMinimum(params.TEMP_MIN_VALUE)
@@ -42,27 +36,33 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
     
     def updateUI(self):
         # Set values from settings
-        self.dayTempSlider.setValue(self.manager.getDayTempValue())
-        self.stateCheckBox.setChecked(self.manager.checkIfEnabled())
-        
-        self.dayTempLabel.setText(str(self.manager.getDayTempValue()))
+
+        day_value = self.client.get_day_temp_value()
+        self.dayTempSlider.setValue(day_value)
+        self.dayTempLabel.setText(str(day_value))
+
+        self.stateCheckBox.setChecked(self.client.get_state())
+
 
     def changeState(self, state):
 
         if state == Qt.Checked:
-            self.manager.update()
+            #self.manager.update()
+            pass
         else:
-            self.manager.stop()
+            #self.manager.stop()
+            pass
 
 
     def changeDayValue(self, value):
         print("value changed " + str(value))
-        self.manager.setDayTempValue(value)
+        #self.manager.setDayTempValue(value)
+        pass
 
-        self.dayTempLabel.setText(str(self.manager.getDayTempValue()))
+        #self.dayTempLabel.setText(str(self.manager.getDayTempValue()))
 
         if self.stateCheckBox.isChecked():
-            self.manager.update()
+            pass
 
 
 
