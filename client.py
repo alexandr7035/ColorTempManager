@@ -9,7 +9,7 @@ class Client():
         self.socket.connect((params.SERVER_ADDR, params.SERVER_PORT))
 
     
-    def get_state(self):
+    def check_if_enabled(self):
         self.socket.sendall(json.dumps({"command": "getValue", "type" : "state"}).encode())
         
         #print(self.socket.recv(1024).decode())
@@ -23,5 +23,3 @@ class Client():
         response = json.loads(self.socket.recv(1024).decode())
         
         return int(response["response"])
-
-

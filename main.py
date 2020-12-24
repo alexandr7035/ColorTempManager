@@ -41,7 +41,7 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.dayTempSlider.setValue(day_value)
         self.dayTempLabel.setText(str(day_value))
 
-        self.stateCheckBox.setChecked(self.client.get_state())
+        self.stateCheckBox.setChecked(self.client.check_if_enabled())
 
 
     def changeState(self, state):
