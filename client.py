@@ -10,7 +10,7 @@ class Client():
 
     
     def check_if_enabled(self):
-        self.socket.sendall(json.dumps({"command": "getValue", "type" : "state"}).encode())
+        self.socket.sendall(json.dumps({"command": "getValue", "type" : "is_enabled"}).encode())
         
         #print(self.socket.recv(1024).decode())
 
@@ -18,8 +18,14 @@ class Client():
 
         return response["response"]
 
+    
+    def set_enabled(self, is_enabled):
+        self.socket.sendall(json.dumps({"command": "setValue", "type" : "is_enabled", "value" : is_enabled}).encode())
+
+
     def get_day_temp_value(self):
-        self.socket.sendall(json.dumps({"command": "getValue", "type" : "temp", "time" : "day"}).encode())
+        self.socket.sendall(json.dumps({"command": "getValue", "type" : "day_temp"}).encode())
         response = json.loads(self.socket.recv(1024).decode())
         
         return int(response["response"])
+    

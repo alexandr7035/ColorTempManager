@@ -16,10 +16,9 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.client = client.Client()
 
         self.setupUi(self)
+        print("ui ok")
 
-        # Create working directory
-        if not os.path.isdir(params.WORK_DIR):
-            os.mkdir(params.WORK_DIR)
+
 
         # Override the title
         self.setWindowTitle(params.WINDOW_TITLE)
@@ -35,23 +34,23 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
         self.updateUI()
     
     def updateUI(self):
+        
         # Set values from settings
-
         day_value = self.client.get_day_temp_value()
+        
         self.dayTempSlider.setValue(day_value)
         self.dayTempLabel.setText(str(day_value))
-
         self.stateCheckBox.setChecked(self.client.check_if_enabled())
 
 
     def changeState(self, state):
 
         if state == Qt.Checked:
-            #self.manager.update()
-            pass
+            self.client.set_enabled(True)
+            
         else:
-            #self.manager.stop()
-            pass
+            self.client.set_enabled(False)
+           
 
 
     def changeDayValue(self, value):
@@ -71,4 +70,5 @@ if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)  
     window = App()  
     window.show()  
+    print("shiwb")
     app.exec_()

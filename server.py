@@ -24,14 +24,19 @@ import socket
 
 class Manager:
     def __init__(self):
+
+        # Create working directory
+        if not os.path.isdir(params.WORK_DIR):
+            os.mkdir(params.WORK_DIR)   
+
         if not os.path.exists(params.CONFIG_FILE):
 
             self.config = open(params.CONFIG_FILE, 'w')
 
             default_settings = {}
 
-            default_settings["day_value"] = params.TEMP_DAY_DEFAULT_VALUE
-            default_settings["night_value"] = params.TEMP_NIGHT_DEFAULT_VALUE
+            default_settings["day_temp"] = params.TEMP_DAY_DEFAULT_VALUE
+            default_settings["night_temp"] = params.TEMP_NIGHT_DEFAULT_VALUE
             default_settings["is_enabled"] = False
 
             json.dump(default_settings, self.config)
@@ -41,10 +46,36 @@ class Manager:
         self.config = open(params.CONFIG_FILE, 'r+')
         self.settings = json.load(self.config)
 
+    
+    def update_settings_file(self):
+        self.config.seek(0)
+        json.dump(self.settings, self.config)
+        self.config.truncate()
 
 
     def check_if_enabled(self):
         return self.settings['is_enabled']
+
+    def set_enabled(self, is_enabled):
+        self.settings["is_enabled"] = is_enabled
+        self.update_settings_file()
+
+    
+    def get_day_temp_value(self):
+        return self.settings["day_value"]
+
+
+    def handle_GET_request(self, json_request):
+        
+        data = {}
+
+        data["response"] = self.settings[json_request["type"]]
+        
+        return json.dumps(data).encode()
+
+    
+    def handle_SET_request(self, json_request):
+        self.settings[json_request["type"]] = json_request["value"]
 
 
 
@@ -76,27 +107,16 @@ def main():
                     break
                 
 
-                response = ""
-
-                print("OK")
+                response = b""
 
                 if (client_mesg["command"] == "getValue"):
-                    print("OK")
-                    if (client_mesg["type"] == "state"):
-                        data = {}
-                        data["response"] = manager.settings['is_enabled']
+                    response = manager.handle_GET_request(client_mesg)
 
-                        response = json.dumps(data).encode()
+                elif (client_mesg["command"] == "setValue"):
+                    manager.handle_SET_request(client_mesg)
 
-                    elif (client_mesg["type"] == "temp"):
-                        print("OK")
-                        if (client_mesg["time"] == "day"):
-                            data = {}
-                            data["response"] = manager.settings["day_value"]
 
-                            response = json.dumps(data).encode()
-
-                print("RESP " + response.decode())
+                print("Response sent: " + str(response))
                 connection_socket.send(response)
                 
             connection_socket.close()
