@@ -7,22 +7,6 @@ import subprocess
 
 from apscheduler.schedulers.background import BackgroundScheduler
 
-#
-# Receives json objects with commands
-#
-# Possible commands
-#
-# 1) {"setState": STATE}
-# 2) {"geteState": STATE}
-# 3) {"setDayValue": TEMP}
-# 4) {"getDayValue": TEMP}
-# 5) {"setNightValue"}
-# 6) {"getNightValue"}
-#
-# STATE value must be string (either "enabled" or "disabled")
-# TEMP value must be integer (from 1000 to 25000 according to redshift documentation)
-#
-
 
 class Manager:
     def __init__(self):
