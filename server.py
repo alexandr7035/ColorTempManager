@@ -2,7 +2,9 @@ import params
 import json
 import os
 import socket
+import atexit
 
+from apscheduler.schedulers.background import BackgroundScheduler
 
 #
 # Receives json objects with commands
@@ -53,18 +55,6 @@ class Manager:
         self.config.truncate()
 
 
-    def check_if_enabled(self):
-        return self.settings['is_enabled']
-
-    def set_enabled(self, is_enabled):
-        self.settings["is_enabled"] = is_enabled
-        self.update_settings_file()
-
-    
-    def get_day_temp_value(self):
-        return self.settings["day_value"]
-
-
     def handle_GET_request(self, json_request):
         
         data = {}
@@ -78,6 +68,20 @@ class Manager:
         self.settings[json_request["type"]] = json_request["value"]
 
 
+    def activate_redshift(self):
+        os.system("redshift -P -O " + str(self.settings["day_temp"]))
+
+    def stop_redshift(self):
+        os.system("redshift -x")
+
+    def update_timejob(self):
+        if self.settings["is_enabled"]:
+            self.activate_redshift()
+        else:
+            self.stop_redshift()
+
+
+
 
 def main():
 
@@ -87,6 +91,16 @@ def main():
     server_socket.listen(1)
 
     manager = Manager()
+
+    # Timejob for updates
+    # Use 'atexit' to shut down the scheduler when exiting the app
+    scheduler = BackgroundScheduler()
+    scheduler.add_job(func=manager.update_timejob,
+                          trigger="interval",
+                          seconds=params.UPDATE_DELAY)
+    scheduler.start()
+    atexit.register(lambda: scheduler.shutdown())
+
 
     print( 'The server is ready to receive.')
 
@@ -127,5 +141,8 @@ def main():
 
 
 if __name__ == "__main__":
+
+
+
     main()
 
