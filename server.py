@@ -1,6 +1,7 @@
 import params
 import json
 import os
+import sys
 import socket
 import atexit
 import subprocess
@@ -46,6 +47,10 @@ class Manager:
 
     def handle_SET_request(self, json_request):
         self.settings[json_request["type"]] = json_request["value"]
+
+        # Least resource-intensive place in code to save a file
+        print("Write data to file")
+        self.update_settings_file()
 
     def activate_redshift(self):
         # os.system("redshift -P -O " + str(self.settings["day_temp"]))
@@ -113,6 +118,7 @@ def main():
     # Exit on Ctrl-C
     except KeyboardInterrupt:
         print("\nServer is stopped by Ctrl-C. Exit")
+        sys.exit()
 
 
 if __name__ == "__main__":
