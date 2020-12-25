@@ -1,5 +1,6 @@
 import sys
 import os
+import socket
 
 from PyQt5 import QtWidgets
 from PyQt5.QtCore import Qt
@@ -13,7 +14,11 @@ class App(QtWidgets.QMainWindow, design.Ui_MainWindow):
     def __init__(self):
         super().__init__()
 
-        self.client = client.Client()
+        try:
+            self.client = client.Client()
+        except socket.error as err:
+            print("Can't connect to the server. Exit.")
+            sys.exit(1)
 
         self.setupUi(self)
 
